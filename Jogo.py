@@ -79,18 +79,17 @@ def tela_personagens():
     personag_escolhido = None
     janela = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Escolha seu Personagem")
+    janela.blit(fundo_personagens, (0, 0))
+    desenhar_botao(vaca_button, botao_personag, "VACA", 120, 85)
+    desenhar_botao(rato_button, botao_personag, "RATO", 120, 85)
+    desenhar_botao(gato_button, botao_personag, "GATO", 120, 85)
+    pygame.display.update()
 
     while True:
-        clock.tick(60)
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                return 
-
-        janela.blit(fundo_personagens, (0, 0))
-        desenhar_botao(vaca_button, botao_personag, "VACA", 120, 85)
-        desenhar_botao(rato_button, botao_personag, "RATO", 120, 85)
-        desenhar_botao(gato_button, botao_personag, "GATO", 120, 85)
-        pygame.display.update()
+        # clock.tick(60)
+        # for event in pygame.event.get():
+        #     if event.type == QUIT:
+        #         return
 
         for event in pygame.event.get(): 
             if event.type == MOUSEBUTTONDOWN and event.button == 1: 
@@ -100,7 +99,8 @@ def tela_personagens():
                     personag_escolhido =  "gato" 
                 elif rato_button.collidepoint(event.pos):
                     personag_escolhido =  "rato"
-        
+            if event.type == QUIT:
+                return
                 
         if personag_escolhido is not None:
             texto = f"Você escolheu {personag_escolhido}!"
