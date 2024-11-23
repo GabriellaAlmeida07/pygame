@@ -109,7 +109,6 @@ def tela_personagens():
 
     while True:
         personagem_escolhido = None
-
         for event in pygame.event.get(): 
             if event.type == MOUSEBUTTONDOWN and event.button == 1: 
                 if vaca_button.collidepoint(event.pos):
@@ -118,8 +117,6 @@ def tela_personagens():
                     personagem_escolhido =  "gato" 
                 elif rato_button.collidepoint(event.pos):
                     personagem_escolhido =  "rato"
-            if event.type == QUIT:
-                return
                 
         if personagem_escolhido is not None:
             texto = f"Você escolheu {personagem_escolhido}!"
