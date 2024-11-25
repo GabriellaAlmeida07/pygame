@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import scipy
 from scipy.optimize import fsolve
 from matplotlib.animation import FuncAnimation
 
@@ -14,8 +13,8 @@ def tempo_queda(g, b, m, H):
     else:
         def r(t):
             T = m/b
-            return H - (g * T * (t + T * (1 - np.exp(-t / T))))
-        tempo = fsolve(r, 0)
+            return H - g*t*T + (g*(T**2)*(1 - (1/np.exp(t/T))))
+        tempo = fsolve(r, 1)
         
         return np.linspace(0, tempo[0], 100)
     
@@ -25,7 +24,7 @@ def posicao(g, b, m, H, t):
         y = H - (g * t**2 / 2)
     else:
         T = m/b
-        y = H - (g * T * (t + T * (1 - np.exp(-t / T))))
+        y = H - g*t*T + (g*(T**2)*(1 - (1/np.exp(t/T))))
 
     return y
 
@@ -35,14 +34,14 @@ def velocidade(g, b, m, H, t):
         y = -g * t
     else:
         T = m/b
-        y = g * T * (1 - np.exp(-t / T))
+        y = g * T * (1 - (1/np.exp(t / T)))
 
     return y
 
 g = 9.8
-b = 0.5
-m = 1.0
-H = 100.0
+b = 1
+m = 500.0
+H = 50.0
 
 # Define os eixos do gráfico
 t = tempo_queda(g, b, m, H)
@@ -80,6 +79,6 @@ def update(frame):
     return line1, line2
 
 # Criando a animação
-ani = FuncAnimation(fig, update, frames=range(1, len(t)), blit=True, interval=50)
+ani = FuncAnimation(fig, update, frames=range(1, len(t)), blit=True, interval=15)
 plt.grid()
 plt.show()
