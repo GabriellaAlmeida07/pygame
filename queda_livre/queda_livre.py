@@ -1,5 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
+<<<<<<< HEAD
+=======
+import scipy
+>>>>>>> b0499209c955a6a05c12adae84c29792ba8997af
 from scipy.optimize import fsolve
 from matplotlib.animation import FuncAnimation
 
@@ -13,8 +17,13 @@ def tempo_queda(g, b, m, H):
     else:
         def r(t):
             T = m/b
+<<<<<<< HEAD
             return H - g*t*T + (g*(T**2)*(1 - (1/np.exp(t/T))))
         tempo = fsolve(r, 1)
+=======
+            return H - (g * T * (t + T * (1 - np.exp(-t / T))))
+        tempo = fsolve(r, 0)
+>>>>>>> b0499209c955a6a05c12adae84c29792ba8997af
         
         return np.linspace(0, tempo[0], 100)
     
@@ -24,7 +33,11 @@ def posicao(g, b, m, H, t):
         y = H - (g * t**2 / 2)
     else:
         T = m/b
+<<<<<<< HEAD
         y = H - g*t*T + (g*(T**2)*(1 - (1/np.exp(t/T))))
+=======
+        y = H - (g * T * (t + T * (1 - np.exp(-t / T))))
+>>>>>>> b0499209c955a6a05c12adae84c29792ba8997af
 
     return y
 
@@ -34,14 +47,24 @@ def velocidade(g, b, m, H, t):
         y = -g * t
     else:
         T = m/b
+<<<<<<< HEAD
         y = g * T * (1 - (1/np.exp(t / T)))
+=======
+        y = g * T * (1 - np.exp(-t / T))
+>>>>>>> b0499209c955a6a05c12adae84c29792ba8997af
 
     return y
 
 g = 9.8
+<<<<<<< HEAD
 b = 1
 m = 500.0
 H = 50.0
+=======
+b = 0.5
+m = 1.0
+H = 100.0
+>>>>>>> b0499209c955a6a05c12adae84c29792ba8997af
 
 # Define os eixos do gráfico
 t = tempo_queda(g, b, m, H)
@@ -79,6 +102,10 @@ def update(frame):
     return line1, line2
 
 # Criando a animação
+<<<<<<< HEAD
 ani = FuncAnimation(fig, update, frames=range(1, len(t)), blit=True, interval=15)
+=======
+ani = FuncAnimation(fig, update, frames=range(1, len(t)), blit=True, interval=50)
+>>>>>>> b0499209c955a6a05c12adae84c29792ba8997af
 plt.grid()
 plt.show()
