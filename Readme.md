@@ -33,7 +33,7 @@ O projeto foi implementado em Python3, utilizando os pacotes PyGame, NumPy e Mat
     git clone https://github.com/GabriellaAlmeida07/pygame
     cd pygame
   
-  - Instale os pacotes necessários executando:
+  - Instale pygame:
     ```bash
     python -m pip install -U pygame --user
     
