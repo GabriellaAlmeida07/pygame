@@ -25,18 +25,37 @@ Esse projeto é um jogo, criado para representar fenômenos específicos da fís
 O projeto foi implementado em Python3, utilizando os pacotes PyGame, NumPy e Matplotlib. Cada um desses pacotes oferecem ferrametas específicas que foram necessárias para criar a interface do jogo.
 
 ## Como jogar?
-- **Instalação e Dependências:**
+- **Instalação de Dependências:**
   - Abra o terminal 
-  - Certifique-se de que o Python 3.6+ está instalado.
+  - Certifique-se de que o Python 3.6+ e Git estão instalados.
+  - Clone o repositório, usando:
+    ```bash
+    git clone https://github.com/GabriellaAlmeida07/pygame
+
+  - ```bash
+    cd pygame
+  
   - Instale os pacotes necessários executando:
-    
     ```bash
     python -m pip install -U pygame --user
+    
+  - Instale numpy:
+    ```bash
+    python -m pip install -U numpy --user
 
+  - Instale matplotlib:
+    ```bash
+    python -m pip install -U matplotlib --user
+
+  - Instale scipy:
+    ```bash
+    python -m pip install -U scipy --user
+
+      
   - **Abrindo o jogo:**  
   - Para rodar o jogo, utilize o código:
     ```python
-      python Jogo.py
+      python3 Jogo.py
     ```
 - **No jogo:**
   - Passo 1: Clique em start para começar o jogo;
