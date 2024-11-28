@@ -216,7 +216,7 @@ def simulacao_queda(g, b, m, H, tmax, chute):
 
 
     # Imagem do objeto
-    if m==0.2:
+    if m==30:
         objeto_img = pygame.image.load("imgs/personagens/porco.png")
         objeto_img = pygame.transform.scale(objeto_img, (100, 100))# Ajuste para o tamanho desejado
     elif m==4:
