@@ -5,9 +5,6 @@ import matplotlib.pyplot as plt
 from scipy.optimize import fsolve
 from matplotlib.animation import FuncAnimation
 
-# Inicialização do Pygame
-pygame.init()
-
 def tempo_queda(g, b, m, H):
     if b == 0:
         def r(t):
@@ -115,8 +112,8 @@ def tela_adivinhar_tempo(tempo_real):
 
     
     return chute
-    # pygame.quit()  # Fecha a janela do Pygame
-    # sys.exit()  # Encerra o programa
+    pygame.quit()  # Fecha a janela do Pygame
+    sys.exit()  # Encerra o programa
 
 
 def renderizar_resultado(janela, fonte, resultado):
@@ -174,7 +171,7 @@ def simulacao_queda(g, b, m, H, tmax, chute):
     #chute = tela_adivinhar_tempo(tmax)"""
     
     # Inicialização do Pygame
-    # pygame.init()
+    pygame.init()
 
     # Configuração da janela
     WIDTH, HEIGHT = int(1850 * ESCALA), int(960 * ESCALA)
@@ -296,13 +293,16 @@ def simulacao_queda(g, b, m, H, tmax, chute):
                 pygame.time.wait(3000)  # Mostra o texto por 3 segundos
         
     if not tela_adivinhar_tempo(tmax):
-        # pygame.quit()
+        pygame.quit()
         return
         
 
-    # pygame.quit()
+    pygame.quit()
     return
 
+
+# Inicialização do Pygame
+pygame.init()
 
 # Fator de escala
 ESCALA = 0.5
