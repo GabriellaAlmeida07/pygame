@@ -16,7 +16,10 @@ Esse projeto é um jogo, criado para representar fenômenos específicos da fís
 
 ### **Animação do personagem em queda livre no ambiente e viscosidade selecionada:** 
 
-![Queda do personagem](https://github.com/user-attachments/assets/358d9751-9870-40af-afb9-75e1cba3d6df)
+<p float="left">
+<img src="https://github.com/user-attachments/assets/25843ae6-637f-4c52-a27a-3f75e99f2828" width="80%" />
+</p>
+
 
 ## Conceitos de Física e Modelo matemático
 
