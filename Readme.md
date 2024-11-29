@@ -50,7 +50,7 @@ O projeto foi implementado em Python3, utilizando os pacotes PyGame, NumPy e Mat
     python -m pip install -U scipy --user
 
       
-  - **Abrindo o jogo:**  
+- **Abrindo o jogo:**  
   - Para rodar o jogo, utilize o código:
     ```python
       python3 Jogo.py
