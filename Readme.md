@@ -120,10 +120,10 @@ No jogo, ampliamos o conceito clássico de queda livre para explorar como difere
 * Lua: $g = 1,6 \ \text{m/s}^2$
 * Marte: $g = 3,7 \ \text{m/s}^2$
 
-**2. Viscosidades:** No jogo temos três fluidos diferenets, cada um com sua própria viscosidade, que afeta o tempo de queda. Valores de viscosidade aplicados aos fluidos:
-* Ar: $\eta = 0,001 \ \text{mP}$ - Baixa viscosidade, resistência quase insignificante ao movimento
+**2. Viscosidades:** No jogo temos três fluidos diferentes, cada um com sua própria viscosidade, que afeta o tempo de queda. Valores de viscosidade aplicados aos fluidos:
+* Ar: $\eta = 0,02 \ \text{mP}$ - Baixa viscosidade, resistência quase insignificante ao movimento
 * Água: $\eta = 1 \ \text{mP}$ - Viscosidade moderada, resistência perceptível ao movimento
-* Mel: $\eta = 10.000 \ \text{mP}$ - Alta viscosidade, grande resistência ao movimento
+* Mel: $\eta = 24 \ \text{mP}$ - Alta viscosidade, grande resistência ao movimento
 
 
 **3. Peso dos Objetos:** O jogador pode escolher personagens com diferentes massas, representando objetos variados. Embora o peso não afete o tempo de queda em condições ideais, ele desempenha um papel importante em meios com viscosidade. São três opções de massa:
