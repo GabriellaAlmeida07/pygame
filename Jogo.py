@@ -5,67 +5,116 @@ import matplotlib.pyplot as plt
 from scipy.optimize import fsolve
 from matplotlib.animation import FuncAnimation
 
+from scipy.optimize import fsolve
+import numpy as np
+
 def tempo_queda(g, b, m, H):
+    """
+    Calcula o tempo de queda de um objeto a partir de uma altura H,
+    considerando a gravidade e a viscosidade do ambiente.
+
+    Parâmetros:
+        g (float): Aceleração da gravidade (m/s²).
+        b (float): Coeficiente de viscosidade.
+        m (float): Massa do objeto (kg).
+        H (float): Altura inicial do objeto (m).
+
+    Retorna:
+        float: Tempo necessário para o objeto atingir o solo (s).
+    """
     if b == 0:
+        # Queda sem resistência do ar
         def r(t):
             return H - (g * t**2 / 2)
         tempo = fsolve(r, 0)
         return tempo[0]
     else:
+        # Queda com resistência do ar
         def r(t):
-            T = m/b
-            return H - g*t*T + (g*(T**2)*(1 - np.exp(-t/T)))
+            T = m / b
+            return H - g * t * T + (g * (T**2) * (1 - np.exp(-t / T)))
         tempo = fsolve(r, 1)
-        
         return tempo[0]
 
-
 def posicao(g, b, m, H, t):
+    """
+    Calcula a posição de um objeto em queda livre a partir de uma altura H
+    no instante de tempo t, considerando a gravidade e a viscosidade do ambiente.
+
+    Parâmetros:
+        g (float): Aceleração da gravidade (m/s²).
+        b (float): Coeficiente de viscosidade.
+        m (float): Massa do objeto (kg).
+        H (float): Altura inicial do objeto (m).
+        t (float): Tempo decorrido desde o início da queda (s).
+
+    Retorna:
+        float: Posição do objeto em relação ao solo (m).
+    """
     if b == 0:
+        # Posição sem resistência do ar
         y = H - (g * t**2 / 2)
     else:
+        # Posição com resistência do ar
         T = m / b
-        y = H - g * t * T + (g * (T**2) * (1 - np.exp(-t/T)))
+        y = H - g * t * T + (g * (T**2) * (1 - np.exp(-t / T)))
     return y
 
-def velocidade(g, b, m, H, t):
+def velocidade(g, b, m, t):
+    """
+    Calcula a velocidade de um objeto em queda livre no instante de tempo t,
+    considerando a gravidade e a viscosidade do ambiente.
+
+    Parâmetros:
+        g (float): Aceleração da gravidade (m/s²).
+        b (float): Coeficiente de viscosidade.
+        m (float): Massa do objeto (kg).
+        t (float): Tempo decorrido desde o início da queda (s).
+
+    Retorna:
+        float: Velocidade do objeto em relação ao solo (m/s).
+    """
     if b == 0:
+        # Velocidade sem resistência do ar
         y = -g * t
     else:
+        # Velocidade com resistência do ar
         T = m / b
         y = g * T * (1 - np.exp(-t / T))
     return y
 
+
 import pygame
 import time
 
+# Função para a tela de adivinhar o tempo de queda
 def tela_adivinhar_tempo(tempo_real):
+    # Configura a janela do pygame
     janela = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Adivinhe o tempo de queda")
     janela.blit(fundo_adivinhe, (0, 0))
     
     # Fontes
     fonte_input = pygame.font.Font(None, int(80 * ESCALA))  # Fonte para input
-    fonte_instrucao = pygame.font.Font(None, int(50 * ESCALA))  # Fonte para instrução
-    fonte_resultado = pygame.font.Font(None, int(60 * ESCALA))  # Fonte para resultado
     
     # Caixa de entrada
     input_box = pygame.Rect(WIDTH // 2 - 150 * ESCALA, HEIGHT // 2 - 50 * ESCALA, 300 * ESCALA, 100 * ESCALA)
     cor_inativa = (0, 0, 0)  # Preto para borda da caixa inativa
-    cor_ativa = (0, 0, 0)  # Preto para borda da caixa ativa
+    cor_ativa = (128, 128, 128)  # Cinza para borda da caixa ativa
     
-    ativa = False
-    texto = ""
-    resultado = None
-    chute = None
+    # Variáveis para controle do estado e entrada do usuário
+    ativa = False  # Indica se a caixa de entrada está ativa
+    texto = ""  # Armazena o texto digitado pelo usuário
+    chute = None  # Armazena o valor numérico digitado pelo usuário
     
+    # Loop principal da tela
     while True:
-        # janela.fill((255, 255, 255))  # Fundo branco
-        
+        # Processa eventos do pygame
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return False  # Retorna para encerrar o jogo
+                return False  # Encerra o jogo se o usuário fechar a janela
             
+            # Ativa ou desativa a caixa de entrada dependendo de onde o usuário clicou
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if input_box.collidepoint(event.pos):
                     ativa = True
@@ -73,64 +122,65 @@ def tela_adivinhar_tempo(tempo_real):
                     ativa = False
             
             if event.type == pygame.KEYDOWN:
-                if ativa:
+                if ativa: # Se a caixa de entrada estiver ativa
                     if event.key == pygame.K_RETURN:
+                        # Tenta converter o texto digitado em um número float
                         try:
                             chute = float(texto)
-                            if abs(chute - tempo_real) < 1:  # Tolerância de 1 segundo
-                                resultado = "Parabéns! Você acertou!"
-                            else:
-                                resultado = f"Errado! O tempo real é {tempo_real:.2f} segundos."
                         except ValueError:
-                            resultado = "Por favor, insira um número válido."
+                            chute = 0.0 # Caso o valor não seja válido, define como 0.0
                         texto = ""
-                        
-                        time.sleep(2.5)
-                        
-                        return chute
-                        # pygame.quit()  # Fecha a janela do Pygame
-                        # sys.exit()  # Encerra o programa
-                        
+                        time.sleep(1.5) # Pausa de 1.5 segundos 
+                        return chute # Retorna o número inserido pelo usuário
+
+                    # Remove o último caractere do texto se o usuário clicar na tecla BACKSPACE  
                     elif event.key == pygame.K_BACKSPACE:
                         texto = texto[:-1]
                     else:
+                        # Adiciona o caractere digitado ao texto
                         texto += event.unicode
         
-        # Renderiza a interface
-        cor_caixa = cor_ativa if ativa else cor_inativa
-        pygame.draw.rect(janela, cor_caixa, input_box, 2)  # Bordas da caixa de entrada
+        # Desenha a interface gráfica
+        cor_caixa = cor_ativa if ativa else cor_inativa  # Escolhe a cor da borda com base no estado da caixa
+        pygame.draw.rect(janela, cor_caixa, input_box, 2)  # Desenha a borda da caixa de entrada
         
-        # Texto da entrada
+        # Renderiza o texto digitado pelo usuário
         texto_renderizado = fonte_input.render(texto, True, (0, 0, 0))  # Texto em preto
-        janela.blit(texto_renderizado, (input_box.x + 10, input_box.y + 10))
-        
-        # Mensagem de instrução
-        # instrucao = fonte_instrucao.render("Adivinhe o tempo de queda (segundos):", True, (0, 0, 0))  # Texto em preto
-        # janela.blit(instrucao, (WIDTH // 2 - instrucao.get_width() // 2, HEIGHT // 2 - 150 * ESCALA))
+        janela.blit(texto_renderizado, (input_box.x + 10, input_box.y + 10))  # Exibe o texto na caixa de entrada
 
+        # Atualiza a tela com as mudanças
         pygame.display.flip()
-
-    
-    return chute
-    pygame.quit()  # Fecha a janela do Pygame
-    sys.exit()  # Encerra o programa
-
-
-def renderizar_resultado(janela, fonte, resultado):
-    """Função para exibir o resultado no centro da janela."""
-    janela.fill((255, 255, 255))  # Fundo branco
-    texto = fonte.render(resultado, True, (0, 0, 0))  # Texto em preto
-    janela.blit(texto, (WIDTH // 2 - texto.get_width() // 2, HEIGHT // 2 - texto.get_height() // 2))
-
 
 
 def simulacao_queda(g, b, m, H, tmax, chute):
 
-    # Define os eixos do gráfico
+    """
+    Realiza uma simulação gráfica interativa de queda livre.
+
+    Esta função utiliza a biblioteca Pygame para animar a queda de um objeto sob influência da gravidade 
+    e da viscosidade do ambiente, além de comparar o tempo simulado com o tempo estimado pelo usuário.
+
+    Parâmetros:
+    - g (float): Aceleração da gravidade no local (m/s²).
+    - b (float): Coeficiente de viscosidade.
+    - m (float): Massa do objeto (kg).
+    - H (float): Altura inicial de queda (m).
+    - tmax (float): Tempo máximo da simulação (s).
+    - chute (float): Tempo estimado pelo usuário para a queda do objeto.
+
+    Retorno:
+    - Nenhum valor é retornado, mas a função exibe uma janela interativa com a simulação e 
+      informa ao usuário se sua estimativa de tempo foi correta.
+    """
+
+    # Define os parâmetros da queda livre
     t = np.linspace(0, tmax, 100)
     r = posicao(g, b, m, H, t)
-    v = velocidade(g, b, m, H, t)
+    v = velocidade(g, b, m, t)
+
     """
+    Simulação gráfica das variações de posição e velocidade pelo tempo
+
     # Cria a figura em um único eixo, com uma linha vazia a ser atualizada na animação
     fig, (eixo1, eixo2) = plt.subplots(1, 2, figsize=(10, 5))
     line1, = eixo1.plot([], [], label='Posição', color='blue')
@@ -166,9 +216,7 @@ def simulacao_queda(g, b, m, H, tmax, chute):
     # Criando a animação
     ani = FuncAnimation(fig, update, frames=range(1, len(t)), blit=True, interval=15)
     plt.grid()
-    plt.show()
-
-    #chute = tela_adivinhar_tempo(tmax)"""
+    plt.show()"""
     
     # Inicialização do Pygame
     pygame.init()
@@ -180,45 +228,33 @@ def simulacao_queda(g, b, m, H, tmax, chute):
 
     # Cores
     WHITE = (255, 255, 255)
-    BLUE = (0, 0, 255)
-    RED = (255, 0, 0)
-    BLACK = (0, 0, 0)
 
-    # Configurações da simulação no pygame
-    tempo = t
-    posicoes = posicao(g, b, m, H, tempo)
-    velocidades = velocidade(g, b, m, H, tempo)
+    # Configurações da simulação
+    tempo = t # Vetor de tempos
+    posicoes = posicao(g, b, m, H, tempo) # Calcula posições
+    velocidades = velocidade(g, b, m, tempo) # Calcula velocidades
 
     # Normalização para escalas da simulação
     max_pos = max(posicoes)
-    min_vel = 0
-    #min_vel = min(velocidades)
-    max_vel = max(velocidades)
+    escala_y = HEIGHT / max_pos  # Escala vertical baseada na altura máxima
+    escala_t = WIDTH / len(tempo) # Escala horizontal baseada no número de pontos de tempo
 
-    escala_y = HEIGHT // 1 / max_pos
-    escala_t = WIDTH / len(tempo)
-
-    # Objeto em queda
+    # Configuração do objeto em queda
     raio_objeto = 50
     posicao_atual = H
 
-    # Loop principal
-    running = True
-    clock = pygame.time.Clock()
-    index_tempo = 0
-
-    # Inicializar fonte
+    # Configuração da fonte
     fonte_tempo = pygame.font.Font(None, int(70 * ESCALA))  # Fonte com tamanho 36
 
-    # Variáveis de texto
+    # Inicialização de variáveis
     tempo_decorrido = 0  # Em segundos
     velocidade_atual = 0  # Inicializa a velocidade
+    index_tempo = 0
 
-
-    # Imagem do objeto
+    # Imagem do objeto(variável com base na massa)
     if m==30:
         objeto_img = pygame.image.load("imgs/personagens/porco.png")
-        objeto_img = pygame.transform.scale(objeto_img, (100, 100))# Ajuste para o tamanho desejado
+        objeto_img = pygame.transform.scale(objeto_img, (100, 100))
     elif m==4:
         objeto_img = pygame.image.load("imgs/personagens/gato.png")
         objeto_img = pygame.transform.scale(objeto_img, (100, 100))
@@ -226,20 +262,23 @@ def simulacao_queda(g, b, m, H, tmax, chute):
         objeto_img = pygame.image.load("imgs/personagens/vaca.png")
         objeto_img = pygame.transform.scale(objeto_img, (100, 100))
 
-    # Plano de fundo
+    # Plano de fundo(variável com base na gravidade)
     if g==1.62:
         fundo_img = pygame.image.load("imgs/ambientes/lua.jpeg")
-        fundo_img = pygame.transform.scale(fundo_img, (WIDTH, HEIGHT))  # Redimensionar para o tamanho da janela
+        fundo_img = pygame.transform.scale(fundo_img, (WIDTH, HEIGHT)) 
     elif g==3.7:
         fundo_img = pygame.image.load("imgs/ambientes/marte.jpeg")
-        fundo_img = pygame.transform.scale(fundo_img, (WIDTH, HEIGHT))  # Redimensionar para o tamanho da janela
+        fundo_img = pygame.transform.scale(fundo_img, (WIDTH, HEIGHT)) 
     else:
         fundo_img = pygame.image.load("imgs/ambientes/terra.png")
-        fundo_img = pygame.transform.scale(fundo_img, (WIDTH, HEIGHT))  # Redimensionar para o tamanho da janela
+        fundo_img = pygame.transform.scale(fundo_img, (WIDTH, HEIGHT)) 
     
+    # Loop principal
+    running = True
+    clock = pygame.time.Clock()
     while running:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT: # Fecha a janela
                 running = False
 
         # Atualiza o cronômetro
@@ -257,49 +296,34 @@ def simulacao_queda(g, b, m, H, tmax, chute):
             posicao_atual = 0
             velocidade_atual = 0
 
-        # Adiciona o plano de fundo
+        # Renderiza o plano de fundo e o objeto
         janela.blit(fundo_img, (0, 0))
-
-        # Renderiza o texto do cronômetro
-        texto_tempo = fonte_tempo.render(f"Tempo: {tempo_decorrido:.2f}s", True, WHITE)
-        janela.blit(texto_tempo, (10, 10))
-
-        # Renderiza o texto da velocidade
-        texto_velocidade = fonte_tempo.render(f"Velocidade: {velocidade_atual:.2f} m/s", True, WHITE)
-        janela.blit(texto_velocidade, (10, 50))
-
-        # Desenha o objeto em queda
         y_objeto = HEIGHT - posicao_atual * escala_y
         janela.blit(objeto_img, (WIDTH // 2 - raio_objeto, int(y_objeto) - raio_objeto))
 
-        # Atualiza a tela
+        # Renderiza o texto
+        texto_tempo = fonte_tempo.render(f"Tempo: {tempo_decorrido:.2f}s", True, WHITE)
+        janela.blit(texto_tempo, (10, 10))
+        texto_velocidade = fonte_tempo.render(f"Velocidade: {velocidade_atual:.2f} m/s", True, WHITE)
+        janela.blit(texto_velocidade, (10, 50))
+
+        # Atualiza a tela e controla FPS
         pygame.display.flip()
         clock.tick(30)  # Limita a 30 quadros por segundo
 
         # Verifica se o objeto atingiu o solo
         if posicao_atual <= 0:
             running = False
-            # Exibe o tempo de queda real
-
+            # Exibe resultado da estimativa do usuário
             if abs(chute - tempo_decorrido) < 1:
                 texto_final = fonte_tempo.render(f"Acertou! Tempo total: {tempo_decorrido:.2f}s", True, (0, 255, 0))
-                janela.blit(texto_final, (WIDTH // 2 - texto_final.get_width() // 2, HEIGHT // 2))
-                pygame.display.flip()
-                pygame.time.wait(3000)  # Mostra o texto por 3 segundos
             else:
                 texto_final = fonte_tempo.render(f"Errou! Tempo total: {tempo_decorrido:.2f}s", True, (255, 0, 0))
-                janela.blit(texto_final, (WIDTH // 2 - texto_final.get_width() // 2, HEIGHT // 2))
-                pygame.display.flip()
-                pygame.time.wait(3000)  # Mostra o texto por 3 segundos
-        
-    if not tela_adivinhar_tempo(tmax):
-        pygame.quit()
-        return
-        
+            janela.blit(texto_final, (WIDTH // 2 - texto_final.get_width() // 2, HEIGHT // 2))
+            pygame.display.flip()
+            pygame.time.wait(3000)  # Mostra o texto por 3 segundos
 
-    pygame.quit()
-    return
-
+    pygame.quit() #Encerra o pygame
 
 # Inicialização do Pygame
 pygame.init()
@@ -377,164 +401,214 @@ fonte = pygame.font.Font(None, int(70 * ESCALA))
 
 # Função para desenhar botão (rect do botão, imagem, texto, x e y do texto)
 def desenhar_botao(rect, img, texto, x, y):
-    #x*=ESCALA
-    #y*=ESCALA
-    janela.blit(img, (rect.x, rect.y)) # Desenha a imagem do botão
+
+    # Desenha a imagem do botão
+    janela.blit(img, (rect.x, rect.y))
     
+    # Renderiza o texto com a fonte configurada em branco
     texto_renderizado = fonte.render(texto, True, (255, 255, 255))  
-    # Defina a posição desejada através dos parametros x e y
+
+    # Calcula a posição do texto com base no deslocamento (x, y)
     texto_x = rect.x + x
     texto_y = rect.y + y
-    janela.blit(texto_renderizado, (texto_x, texto_y)) # Desenha o texto 
+
+    # Desenha o texto sobre o botão
+    janela.blit(texto_renderizado, (texto_x, texto_y))
 
 
 # Função para o menu inicial
 def tela_inicial():
-    # Desenha o fundo e o botão start
+
+    # Desenha o fundo da tela e o botão start
     janela.blit(fundo_img, (0, 0))
-    desenhar_botao(start_button, botao_start, "", 0, 0)  
-    pygame.display.update()
+    desenhar_botao(start_button, botao_start, "", 0, 0) # Chama a função para desenhar o botão de "start"
+    pygame.display.update() # Atualiza a tela para refletir as mudanças
     
+    # Processa os eventos do usuário
     for event in pygame.event.get():            
         if event.type == QUIT:
-            return "sair" 
+            return "sair" # Se o usuário fechar a janela, retorna "sair" para encerrar o jogo
         
-        if event.type == MOUSEBUTTONDOWN and event.button == 1: 
+        if event.type == MOUSEBUTTONDOWN and event.button == 1: # Se o botão esquerdo do mouse for pressionado
+            # Verifica se o clique ocorreu dentro da área do botão "start"
             if start_button.collidepoint(event.pos):
-                return "personagens"  
+                return "personagens" # Retorna "personagens" para navegar para a tela de seleção de personagens 
     
-    return "menu"
+    return "menu" # Se o usuário não interagiu ou clicou em outro lugar, retorna "menu" para permanecer na tela inicial
 
-# Tela de escolha do personagem
+# Tela de seleção do personagem
 def tela_personagens():
+
+    # Configura a janela do Pygame e exibe o fundo da tela de personagens
     janela = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Escolha seu Personagem")
     janela.blit(fundo_personagens, (0, 0))
+
+    # Desenha os botões para cada personagem (Vaca, Porco, Gato)
     desenhar_botao(vaca_button, botao_padrao, "VACA", 130*ESCALA, 85*ESCALA)
     desenhar_botao(porco_button, botao_padrao, "PORCO", 110*ESCALA, 85*ESCALA)
     desenhar_botao(gato_button, botao_padrao, "GATO", 130*ESCALA, 85*ESCALA)
-    pygame.display.update()
 
+    pygame.display.update() # Atualiza a tela para refletir as mudanças
+
+    # Loop principal de interação da tela de personagens
     while True:
-        personagem_escolhido = None
+        personagem_escolhido = None # Inicializa a variável de personagem
 
-        for event in pygame.event.get(): 
-            if event.type == MOUSEBUTTONDOWN and event.button == 1: 
+        for event in pygame.event.get(): # Verifica os eventos gerados pela interação do usuário
+            # Se o usuário clicar no botão esquerdo do mouse
+            if event.type == MOUSEBUTTONDOWN and event.button == 1:
+                # Verifica em qual botão o clique ocorreu e define o personagem escolhido 
                 if vaca_button.collidepoint(event.pos):
                     personagem_escolhido = "vaca" 
                 elif gato_button.collidepoint(event.pos):
                     personagem_escolhido =  "gato" 
                 elif porco_button.collidepoint(event.pos):
                     personagem_escolhido =  "porco"
+            # Se o usuário fechar a janela      
             if event.type == QUIT:
-                return 
-                
+                return # Encerra a função e o jogo
+        
+        # Se um personagem foi escolhido, exibe uma mensagem de confirmação
         if personagem_escolhido is not None:
-            texto = f"Você escolheu {personagem_escolhido}!"
-            janela.blit(balao_aviso, (500*ESCALA, 150*ESCALA))
-            texto_renderizado = fonte.render(texto, True, (0, 0, 0))  
-            janela.blit(texto_renderizado, (620*ESCALA, 360*ESCALA)) 
-            pygame.display.update()
-            pygame.time.wait(2000)
+            texto = f"Você escolheu {personagem_escolhido}!" # Mensagem de confirmação da escolha
+            janela.blit(balao_aviso, (500*ESCALA, 150*ESCALA)) # Desenha o balão de aviso
+            texto_renderizado = fonte.render(texto, True, (0, 0, 0)) # Desenha o balão de aviso
+            janela.blit(texto_renderizado, (620*ESCALA, 360*ESCALA)) # Desenha o texto na tela
+            pygame.display.update() # Atualiza a tela
+            pygame.time.wait(2000) # Espera 2 segundos para mostrar a mensagem
+
+            # Chama as funções para selecionar viscosidade e gravidade
             viscosidade = tela_viscosidade()
             gravidade = tela_gravidade()
+
+            # Retorna o personagem escolhido, a viscosidade e a gravidade
             return personagem_escolhido, viscosidade, gravidade
 
-# Tela viscosidade
+# Tela de seleção da viscosidade
 def tela_viscosidade():
+
+    # Configura a janela do Pygame e exibe o fundo da tela de viscosidade
     janela = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Escolha a viscosidade")
-    janela.blit(fundo_viscosidade, (0, 0)) # Troca img de fundo da janela
-    desenhar_botao(agua_button, botao_padrao, "ÀGUA", 120*ESCALA, 85*ESCALA)
+    pygame.display.set_caption("Escolha a viscosidade") # Define o título da janela
+    janela.blit(fundo_viscosidade, (0, 0)) # # Desenha o fundo da tela
+
+    # Desenha os botões para cada viscosidade (Água, Mel, Ar)
+    desenhar_botao(agua_button, botao_padrao, "ÁGUA", 120*ESCALA, 85*ESCALA)
     desenhar_botao(mel_button, botao_padrao, "MEL", 150*ESCALA, 85*ESCALA)
     desenhar_botao(ar_button, botao_padrao, "AR", 160*ESCALA, 85*ESCALA)
-    pygame.display.update()
 
+    pygame.display.update() # Atualiza a tela para refletir as mudanças
+
+    # Loop principal de interação da tela de viscosidade
     while True:
-        viscosidade_escolhida = None
+        viscosidade_escolhida = None # Inicializa a variável de viscosidade escolhida como None
 
-        for event in pygame.event.get(): 
+        for event in pygame.event.get(): # Verifica os eventos gerados pela interação do usuário
+            # Se o usuário clicar no botão esquerdo do mouse
             if event.type == MOUSEBUTTONDOWN and event.button == 1: 
+                # Verifica em qual botão o clique ocorreu e define a viscosidade escolhida
                 if agua_button.collidepoint(event.pos):
-                    viscosidade_escolhida = "àgua" 
+                    viscosidade_escolhida = "água" 
                 elif mel_button.collidepoint(event.pos):
                     viscosidade_escolhida =  "mel" 
                 elif ar_button.collidepoint(event.pos):
                     viscosidade_escolhida =  "ar"
+            # Se o usuário fechar a janela
             if event.type == QUIT:
-                return
-                
+                return # Encerra a função
+
+        # Se uma viscosidade foi escolhida, exibe uma mensagem de confirmação
         if viscosidade_escolhida is not None:
-            texto = f"Você escolheu {viscosidade_escolhida}!"
-            janela.blit(balao_aviso, (500*ESCALA, 150*ESCALA))
-            texto_renderizado = fonte.render(texto, True, (0, 0, 0))  
-            janela.blit(texto_renderizado, (620*ESCALA, 360*ESCALA)) 
-            pygame.display.update()
-            pygame.time.wait(2000)
+            texto = f"Você escolheu {viscosidade_escolhida}!" # Mensagem de confirmação da escolha
+            janela.blit(balao_aviso, (500*ESCALA, 150*ESCALA)) # Desenha o balão de aviso
+            texto_renderizado = fonte.render(texto, True, (0, 0, 0)) # Renderiza o texto
+            janela.blit(texto_renderizado, (620*ESCALA, 360*ESCALA)) # Desenha o texto na tela
+            pygame.display.update() # Atualiza a tela
+            pygame.time.wait(2000) # Espera 2 segundos para mostrar a mensagem
+
+            # Retorna a viscosidade escolhida
             return viscosidade_escolhida
 
 # Tela gravidade
 def tela_gravidade():
-    janela = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Escolha a gravidade")
-    janela.blit(fundo_gravidade, (0, 0)) # Troca img de fundo da janela
+
+    # Configura a janela do Pygame e exibe o fundo da tela de gravidade
+    janela = pygame.display.set_mode((WIDTH, HEIGHT)) 
+    pygame.display.set_caption("Escolha a gravidade") # Define o título da janela
+    janela.blit(fundo_gravidade, (0, 0)) # Desenha o fundo da tela
+
+    # Desenha os botões para cada gravidade (Lua, Terra, Marte)
     desenhar_botao(lua_button, botao_padrao, "LUA", 150*ESCALA, 85*ESCALA)
     desenhar_botao(terra_button, botao_padrao, "TERRA", 110*ESCALA, 85*ESCALA)
     desenhar_botao(marte_button, botao_padrao, "MARTE", 110*ESCALA, 85*ESCALA)
-    pygame.display.update()
 
+    pygame.display.update() # Atualiza a tela para refletir as mudanças
+
+    # Loop principal de interação da tela de gravidade
     while True:
-        gravidade_escolhida = None
+        gravidade_escolhida = None # Inicializa a variável de gravidade escolhida
 
+         # Verifica os eventos gerados pela interação do usuário
         for event in pygame.event.get(): 
+            # Se o usuário clicar no botão esquerdo do mouse
             if event.type == MOUSEBUTTONDOWN and event.button == 1: 
+                # Verifica em qual botão o clique ocorreu e define a gravidade escolhida
                 if lua_button.collidepoint(event.pos):
                     gravidade_escolhida = "Lua" 
                 elif terra_button.collidepoint(event.pos):
                     gravidade_escolhida =  "Terra" 
                 elif marte_button.collidepoint(event.pos):
                     gravidade_escolhida =  "Marte"
+            # Se o usuário fechar a janela
             if event.type == QUIT:
-                return
-                
+                return # Encerra a função
+        
+        # Se uma gravidade foi escolhida, exibe uma mensagem de confirmação
         if gravidade_escolhida is not None:
-            texto = f"Você escolheu {gravidade_escolhida}!"
-            janela.blit(balao_aviso, (500*ESCALA, 150*ESCALA))
-            texto_renderizado = fonte.render(texto, True, (0, 0, 0))  
-            janela.blit(texto_renderizado, (620*ESCALA, 360*ESCALA)) 
-            pygame.display.update()
-            pygame.time.wait(2000)
-            return gravidade_escolhida
+            texto = f"Você escolheu {gravidade_escolhida}!" # Mensagem de confirmação da escolha
+            janela.blit(balao_aviso, (500*ESCALA, 150*ESCALA)) # Desenha o balão de aviso
+            texto_renderizado = fonte.render(texto, True, (0, 0, 0))  # Renderiza o texto
+            janela.blit(texto_renderizado, (620*ESCALA, 360*ESCALA)) # Desenha o texto na tela
+            pygame.display.update() # Atualiza a tela
+            pygame.time.wait(2000) # Espera 2 segundos para mostrar a mensagem
 
+            # Retorna a gravidade escolhida
+            return gravidade_escolhida
 
 # Função principal
 def game_loop():
-    running = True  # Loop infinito para o jogo
-    personagem = None # Será string exemplo: "porco"
-    viscosidade = None # Será string exemplo: "mel"
-    gravidade = None # Será string exemplo: "lua"
+    running = True  # Inicia o loop principal do jogo
+    personagem = None  # Inicializa a variável para o personagem escolhido
+    viscosidade = None  # Inicializa a variável para a viscosidade escolhida
+    gravidade = None  # Inicializa a variável para a gravidade escolhida
 
-    # Variáveis de texto
-    tempo_decorrido = 0  # Em segundos
-    velocidade_atual = 0  # Inicializa a velocidade
-    cont =0
+    # Inicializa variáveis para o tempo e velocidade durante a simulação
+    tempo_decorrido = 0  
+    velocidade_atual = 0  
+    adivinhou_tempo = False  # Controla se a função para adivinhar o tempo já foi chamada
 
     while running:
-        clock.tick(30)
+        clock.tick(30) # Controla a taxa de atualização do jogo, limitando a 30 quadros por segundo
 
+        # Chama a tela inicial e verifica o evento retornado (se o jogador vai sair ou selecionar o personagem)
         evento = tela_inicial()  
 
+        # Se o jogador escolheu sair
         if evento == "sair":
-            running = False   
+            running = False # Encerra o loop principal e o jogo 
         
+        # Se o jogador escolheu a tela de personagens
         elif evento == "personagens":
+            # Chama a tela de personagens e armazena as escolhas feitas
             personagem, viscosidade, gravidade = tela_personagens()
 
-            H = 50
-            m = None
-            g = None
-            b = None
+            H = 50  # Altura inicial para a simulação de queda
+            m = None  # Massa do personagem
+            g = None  # Gravidade do planeta
+            b = None  # Coeficiente de viscosidade
 
+            # Define a massa com base no personagem escolhido
             if personagem == "porco":
                 m = 30
             elif personagem == "gato":
@@ -542,13 +616,15 @@ def game_loop():
             else:
                 m = 100
 
+            # Define o coeficiente de viscosidade com base na escolha do jogador
             if viscosidade == "ar":
                 b = 0.02
-            elif viscosidade == "àgua":
+            elif viscosidade == "água":
                 b = 1
             else:
                 b = 24
 
+            # Define a gravidade com base no planeta escolhido
             if gravidade == "Lua":
                 g = 1.62
             elif gravidade == "Marte":
@@ -556,18 +632,20 @@ def game_loop():
             else:
                 g = 9.8
 
+            # Calcula o tempo máximo de queda com os parâmetros escolhidos
             tmax = tempo_queda(g, b, m, H)
             
-            if cont==0:
-                chute = tela_adivinhar_tempo(tmax)
-                cont=1
+            # Chama a função de adivinhar o tempo de queda, caso ainda não tenha sido chamada
+            if not adivinhou_tempo:
+                chute = tela_adivinhar_tempo(tmax)  # Chama a tela onde o jogador tenta adivinhar o tempo de queda
+                adivinhou_tempo = True  # Marca que o tempo já foi adivinhado, evitando chamadas repetidas
 
-            print(chute)
+            print(chute) # Exibe o chute do jogador (tempo adivinhado)
 
+            # Inicia a simulação da queda com os parâmetros definidos e o chute do jogador
             simulacao_queda(g, b, m, H, tmax, chute)
 
-
-    pygame.quit()
+    pygame.quit() # Encerra o Pygame quando o loop termina
 
 if __name__ == '__main__':
-    game_loop()
+    game_loop() # Chama a função principal
