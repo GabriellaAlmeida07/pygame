@@ -21,7 +21,114 @@ Esse projeto é um jogo, criado para representar fenômenos específicos da fís
 </p>
 
 
-## Conceitos de Física e Modelo matemático
+## Conceitos de Física e Modelo 
+
+### Queda Livre
+
+A queda livre ocorre quando um objeto é solto de uma determinada altura $H$, a massa fica sujeita exclusivamente à força gravitacional $\vec{F}_g$. Neste cenário, nenhuma outra força, como a resistência do ar, interfere no movimento de queda livre, o que torna a gravidade a única responsável pela aceleração do objeto, neste movimento a gravidade [$g$] permanece constante. Na Terra a gavidade tem um valor aproximado de $9,8 \ \text{m/s}^2$, em outros ambientes (corpos celestes), como a Lua ou Marte, a gravidade é significativamente menor.
+Características principais da queda livre:
+
+* A velocidade do objeto aumenta gradualmente durante o movimento em direção ao solo.
+* A trajetória é influenciada somente pela gravidade, o que torna o movimento previsível e calculável (objetivo do nosso jogo).
+
+Este gráfico (Figura 1), ilustra o movimento de um objeto em queda livre, tem as seguintes componentes: 
+
+- Eixo vertical (z): Representa a altura ou posição do objeto em **função do tempo**, ao longo da direção vertical.
+- Ponto $O$: Marca a origem da queda, no nível do solo.
+- Vetores:
+  - $\vec{F}_g$ (vetor de força gravitacional): Tem direção para baixo, representando a aceleração devido à gravidade.
+  - $\hat{k}$ (vetor unitário, versor): Indica a direção positiva do eixo vertical (para cima).
+- Trajetória do objeto $(\vec{r}(t))$: Representa a posição do objeto ao longo do tempo, mostra a mudança de altura durante a queda.
+- Altura $H$: A altura inicial a partir da qual o objeto é solto.
+- Velocidade inicial $\vec{v(t_i)} = 0$: A velocidade inicial do objeto é zero.
+- Tempos:
+  - ($\vec{t_i})$: O instante inicial, quando o objeto é solto (tempo $t = 0$)
+  - ($\vec{t_q})$: O instante de impacto com o solo.
+  - ($\vec{t})$: Tempo variável durante a queda.
+    
+No gráfico vemos o movimento do objeto e das forças que atuam sobre ele, mostrando a posição e o tempo de queda, com destaque para a aceleração (gravidade).
+
+<p align="center">
+  <img width="350" alt="queda_livre_grafico" src="https://github.com/user-attachments/assets/a9ae8df0-b591-4381-8c72-0f7ab7f01d48">
+  <br>
+  <em> Figura 1</em>
+</p>
+
+### Equações:
+
+A força $\vec{F}_g$ (força gravitacional) que atua no objeto de massa $m$ caindo da altura $H$, é dada pela equação:
+
+$$\begin{equation}
+\vec{F}_g = - m \cdot g \hat{k}
+\end{equation}$$
+
+Definição dos vetores posição, velocidade e aceleração: 
+
+$$\begin{equation}
+\vec{r}(t) =  z(t)\hat{k}
+\end{equation}$$
+
+$$\begin{equation}
+\vec{v}(t) =  \dot{z} (t) \hat{k}
+\end{equation}$$
+
+$$\begin{equation}
+\vec{a}(t) = \ddot{z} (t) \hat{k}
+\end{equation}$$
+
+Usando a força da gravidade na forma de coornadas temos: 
+
+$$\begin{equation}
+-m \cdot g  \hat{k} = - m \cdot \ddot{z} \hat{k}  
+\end{equation}$$
+
+Neste sistema, a gravidade é a aceleração, único movimento presente. Isso implica que $g = \ddot{z}$. Resolvendo a EDO acima, encontramos a seguinte solução: 
+
+**$$\begin{equation}
+z(t) = z_0 + v_0 t - \frac{1}{2} g t^2 
+\end{equation}$$**
+
+Quando substituimos os dados das condições iniciais da queda livre, ($v_0 = 0$ e $z_0 = H$), encontramos: 
+
+$$\begin{equation}
+z(t) = H - \frac{1}{2} g t^2 
+\end{equation}$$
+
+### Considerando a Viscosidade
+Agora, quando introduzimos a viscosidade, o movimento do objeto é afetado pela **força de resistência viscosa**, dada por:
+
+$$ F_{\text{viscosa}} = -\eta v $$
+
+Onde:
+- $\eta$: é a viscosidade do fluido
+- $v$: é a velocidade do objeto.
+
+A equação de movimento agora:
+
+$$m \frac{dv}{dt} = - m g - \eta v$$
+
+Isso resulta em uma solução para a velocidade do objeto que leva em conta a resistência do fluido, como a água ou o mel. A solução dessa equação diferencial, levando em consideração a viscosidade, pode ser expressa como:
+
+$$v(t) = \frac{m g}{\eta} \left( 1 - e^{-\frac{\eta}{m} t} \right)$$
+
+
+### Aplicação de queda livre no jogo
+No jogo, ampliamos o conceito clássico de queda livre para explorar como diferentes variáveis afetam o movimento:
+
+**1. Gravidades Variadas:** O jogador pode experimentar quedas em diferentes ambientes gravitacionais, como:
+* Terra: $g = 9,8 \ \text{m/s}^2$
+* Lua: $g = 1,6 \ \text{m/s}^2$
+* Marte: $g = 3,7 \ \text{m/s}^2$
+
+**2. Viscosidades:** No jogo temos três fluidos diferenets, cada um com sua própria viscosidade, que afeta o tempo de queda. Valores de viscosidade aplicados aos fluidos:
+* Ar: $\eta = 0,001 \ \text{mP}$ - Baixa viscosidade, resistência quase insignificante ao movimento
+* Água: $\eta = 1 \ \text{mP}$ - Viscosidade moderada, resistência perceptível ao movimento
+* Mel: $\eta = 10.000 \ \text{mP}$ - Alta viscosidade, grande resistência ao movimento
+
+
+**3. Peso dos Objetos:** O jogador pode escolher personagens com diferentes massas, representando objetos variados. Embora o peso não afete o tempo de queda em condições ideais, ele desempenha um papel importante em meios com viscosidade.
+
+
 
 ## Implementação
 **Linguagens e Pacotes:**
@@ -71,7 +178,7 @@ O projeto foi implementado em Python3, utilizando os pacotes PyGame, NumPy e Mat
 Este projeto foi desenvolvido por:
 ```
 Gabriella Almeida: 15528121 - gabriella_almeida@usp.br
-Johana
+Johana Jimena Pizarro Laquise: 10248986 - johana_pizarro.l@usp.br
 Kauany Fernandes Santos: 15522379 - kauanysantos@usp.br
 Laura Pazini Medeiros: 15468452 - laurapazinimedeiros@usp.br
 Luysa de Souza Gonçalves: 15474077 - luysasouzag@usp.br
