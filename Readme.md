@@ -29,7 +29,7 @@ Consideramos a queda livre como o movimento quando algum objeto é solto ou aban
 Características principais da queda livre:
 
 * A velocidade do objeto aumenta gradualmente durante o movimento em direção ao solo.
-* A trajetória é influenciada somente pela gravidade, o que torna o movimento previsível e calculável. Entretanto, no jogo, consideramos os efeitos de forças resistivas devido à viscosidade do ambiente.
+* A trajetória é influenciada somente pela gravidade, o que torna o movimento previsível e calculável. (No jogo, consideramos os efeitos de forças resistivas devido à viscosidade do ambiente)
 
 Este gráfico (Figura 1), ilustra o movimento de um objeto em queda livre, tem as seguintes componentes: 
 
