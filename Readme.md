@@ -31,7 +31,7 @@ Características principais da queda livre:
 * A velocidade do objeto aumenta gradualmente durante o movimento em direção ao solo.
 * A trajetória é influenciada somente pela gravidade, o que torna o movimento previsível e calculável. (No jogo, consideramos os efeitos de forças resistivas devido à viscosidade do ambiente)
 
-Este gráfico (Figura 1), ilustra o movimento de um objeto em queda livre, tem as seguintes componentes: 
+Este gráfico (Figura 1) ilustra o movimento de um objeto em queda livre e apresenta as seguintes componentes: 
 
 - Eixo vertical (z): Representa a altura ou posição do objeto em **função do tempo**, ao longo da direção vertical.
 - Ponto $O$: Marca a origem da queda, no nível do solo.
@@ -76,7 +76,7 @@ $$\begin{equation}
 \vec{a}(t) = \ddot{z} (t) \hat{k}
 \end{equation}$$
 
-Usando a força da gravidade na forma de coornadas temos: 
+Usando a força da gravidade na forma de coordenadas temos: 
 
 $$\begin{equation}
 -m \cdot g  \hat{k} = - m \cdot \ddot{z} \hat{k}  
