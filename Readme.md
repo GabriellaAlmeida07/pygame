@@ -25,7 +25,7 @@ Esse projeto é um jogo criado para representar fenômenos específicos da físi
 
 ### Queda Livre
 
-A queda livre ocorre quando um objeto é solto de uma determinada altura $H$, a massa fica sujeita exclusivamente à força gravitacional $\vec{F}_g$. Neste cenário, nenhuma outra força, como a resistência do ar, interfere no movimento de queda livre, o que torna a gravidade a única responsável pela aceleração do objeto, neste movimento a gravidade ($g$) permanece constante. Na Terra a gavidade tem um valor aproximado de $9,8 \ \text{m/s}^2$, em outros ambientes (corpos celestes), como a Lua ou Marte, a gravidade é significativamente menor.
+Consideramos a queda livre como o movimento quando algum objeto é solto ou abandonado do repouso (velocidade inicial igual a zero) a partir de uma certa altura em relação ao solo, em uma região onde haja aceleração gravitacional. Na Terra a gravidade tem um valor aproximado de $9,8 \ \text{m/s}^2$, em outros ambientes (corpos celestes), como a Lua ou Marte, a gravidade é significativamente menor.
 Características principais da queda livre:
 
 * A velocidade do objeto aumenta gradualmente durante o movimento em direção ao solo.
