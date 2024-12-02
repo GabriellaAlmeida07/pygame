@@ -155,7 +155,6 @@ O projeto foi implementado em Python3, utilizando os pacotes PyGame, NumPy, Scip
 
     python -m pip install -U scipy --user
 
-      
 - **Abrindo o jogo:**  
   - Para rodar o jogo, utilize o código:
     ```python
