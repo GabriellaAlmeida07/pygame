@@ -165,7 +165,7 @@ O projeto foi implementado em Python3, utilizando os pacotes PyGame, NumPy, Scip
   - Passo 2: Selecione um personagem entre gato, vaca e porco;
   - Passo 3: Selecione a viscosidade entre água, mel e ar;
   - Passo 4: Selecione a gravidade entre Lua, Terra e Marte;
-  - Passo 5: Digite sua adivinhação do tempo de queda(Caso o valor não seja válido, define como 0.0);
+  - Passo 5: Digite sua adivinhação do tempo de queda (Caso o valor não seja válido, define como 0.0);
   - Passo 6: Assista seu personagem em queda livre nas condições selecionadas e descubra se acertou o tempo de queda.
    
 
