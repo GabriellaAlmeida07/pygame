@@ -1,7 +1,7 @@
 # Queda Livre
 
 ## Descrição do projeto
-Esse projeto é um jogo, criado para representar fenômenos específicos da física. Ele busca demonstrar os conceitos de queda livre, gravidade e viscosidade de uma forma interativa e divertida. O jogo consiste em selecionar um personagem, os quais possuem massas distintas, uma viscosidade e um ambiente que representa diferentes gravidades. Ao seleciona-los, é solicitado que o jogador tente adivinhar o tempo de queda nas condições escolhidas. Por fim, há uma animação que demonstra a queda e revela qual foi o verdadeiro tempo de queda atingido.
+Esse projeto é um jogo criado para representar fenômenos específicos da física, com o objetivo de demonstrar de forma interativa e divertida os conceitos de queda livre, gravidade e viscosidade. O jogo permite que o jogador selecione um personagem, cada um com massas distintas, escolha a viscosidade e um ambiente que representa diferentes níveis de gravidade. Após essas escolhas, o jogador deve tentar adivinhar o tempo de queda nas condições selecionadas. Por fim, uma animação é exibida para mostrar a queda do personagem e revelar o tempo real que foi atingido.
 
 
 ### **Escolha do personagem, viscosidade e gravidade do ambiente. E a tela para adivinhar o tempo de queda:**
