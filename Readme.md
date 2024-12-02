@@ -126,8 +126,10 @@ No jogo, ampliamos o conceito clássico de queda livre para explorar como difere
 * Mel: $\eta = 10.000 \ \text{mP}$ - Alta viscosidade, grande resistência ao movimento
 
 
-**3. Peso dos Objetos:** O jogador pode escolher personagens com diferentes massas, representando objetos variados. Embora o peso não afete o tempo de queda em condições ideais, ele desempenha um papel importante em meios com viscosidade.
-
+**3. Peso dos Objetos:** O jogador pode escolher personagens com diferentes massas, representando objetos variados. Embora o peso não afete o tempo de queda em condições ideais, ele desempenha um papel importante em meios com viscosidade. São três opções de massa:
+* Gato: $m = 4 \ \text{Kg}$
+* Porco: $m = 30 \ \text{Kg}$
+* Vaca: $m = 100 \ \text{Kg}$
 
 
 ## Implementação
