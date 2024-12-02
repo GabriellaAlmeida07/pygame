@@ -97,19 +97,19 @@ z(t) = H - \frac{1}{2} g t^2
 ### Considerando a Viscosidade
 Agora, quando introduzimos a viscosidade, o movimento do objeto é afetado pela **força de resistência viscosa**, dada por:
 
-$$ F_{\text{viscosa}} = -\eta v $$
+$$ F_{viscosa} = -bv = -b\frac{dr}{dt}, $$
 
 Onde:
-- $\eta$: é a viscosidade do fluido
+- $b$: é a viscosidade do fluido
 - $v$: é a velocidade do objeto.
 
 A equação de movimento agora:
 
-$$m \frac{dv}{dt} = - m g - \eta v$$
+$$m \frac{dv}{dt} = - m g - b v$$
 
 Isso resulta em uma solução para a velocidade do objeto que leva em conta a resistência do fluido, como a água ou o mel. A solução dessa equação diferencial, levando em consideração a viscosidade, pode ser expressa como:
 
-$$v(t) = \frac{m g}{\eta} \left( 1 - e^{-\frac{\eta}{m} t} \right)$$
+$$v(t) = \frac{m g}{\eta} \left( 1 - e^{-\frac{b}{m} t} \right)$$
 
 
 ### Aplicação de queda livre no jogo
@@ -180,5 +180,6 @@ Luysa de Souza Gonçalves: 15474077 - luysasouzag@usp.br
 ```
 Como parte do processo avaliativo da disciplina 7600105 - Física Básica I (2024) da USP-São Carlos ministrada pela Prof. Krissia de Zawadzki.
 
-
+## Referências: 
+ (1) Bernardes, E. de S. (2024). Dinâmica-v4. 7600105 - Física Básica I. Universidade de São Paulo, São Carlos.
 
