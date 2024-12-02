@@ -132,7 +132,7 @@ No jogo, ampliamos o conceito clássico de queda livre para explorar como difere
 
 ## Implementação
 **Linguagens e Pacotes:**
-O projeto foi implementado em Python3, utilizando os pacotes PyGame, NumPy e Matplotlib. Cada um desses pacotes oferecem ferrametas específicas que foram necessárias para criar a interface do jogo.
+O projeto foi implementado em Python3, utilizando os pacotes PyGame, NumPy, Scipy e Matplotlib. Cada um desses pacotes oferecem ferrametas específicas que foram necessárias para criar a interface do jogo.
 
 ## Como jogar?
 - **Instalação de Dependências:**
