@@ -1,10 +1,10 @@
 import pygame
 from pygame.locals import *
 import numpy as np
+import time
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve
 from matplotlib.animation import FuncAnimation
-
 from scipy.optimize import fsolve
 import numpy as np
 
@@ -83,9 +83,6 @@ def velocidade(g, b, m, t):
         y = g * T * (1 - np.exp(-t / T))
     return y
 
-
-import pygame
-import time
 
 # Função para a tela de adivinhar o tempo de queda
 def tela_adivinhar_tempo(tempo_real):
@@ -399,9 +396,21 @@ marte_button = pygame.Rect(int(1280 * ESCALA), int(750 * ESCALA), int(300 * ESCA
 # Fonte ajustada
 fonte = pygame.font.Font(None, int(70 * ESCALA))
 
-# Função para desenhar botão (rect do botão, imagem, texto, x e y do texto)
+# Função para desenhar
 def desenhar_botao(rect, img, texto, x, y):
+    """
+    Desenha o botão na tela
 
+    Parâmetros:
+        rect: pygame.Rect do botão.
+        img: Imagem que será o botão.
+        texto: Texto que se deseja escrever dentro do botão.
+        x: Posição no eixo x que o texto estará em relação ao botão.
+        y: Posição no eixo y que o texto estará em relação ao botão.
+
+    Retorna:
+        Não há retorno na função.
+    """
     # Desenha a imagem do botão
     janela.blit(img, (rect.x, rect.y))
     
@@ -418,6 +427,15 @@ def desenhar_botao(rect, img, texto, x, y):
 
 # Função para o menu inicial
 def tela_inicial():
+    """
+    Criação da tela inicial.
+
+    Parâmetros:
+        Não há parâmetros na função.
+
+    Retorna:
+        menu: Se o usuário não interagiu com a tela retorna "menu" para continuar nesta tela.
+    """
 
     # Desenha o fundo da tela e o botão start
     janela.blit(fundo_img, (0, 0))
@@ -434,10 +452,22 @@ def tela_inicial():
             if start_button.collidepoint(event.pos):
                 return "personagens" # Retorna "personagens" para navegar para a tela de seleção de personagens 
     
-    return "menu" # Se o usuário não interagiu ou clicou em outro lugar, retorna "menu" para permanecer na tela inicial
+    return "menu" 
 
 # Tela de seleção do personagem
 def tela_personagens():
+    """
+    Criação da tela para seleção do personagem.
+
+    Parâmetros:
+        Não há parâmetros na função.
+
+    Retorna:
+        personagem_escolhido: uma string que contém o animal escolhido.
+        viscosidade: uma string que contém a viscosidade escolhida.
+        gravidade: uma string que contém a gravidade escolhida.
+
+    """
 
     # Configura a janela do Pygame e exibe o fundo da tela de personagens
     janela = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -487,6 +517,15 @@ def tela_personagens():
 
 # Tela de seleção da viscosidade
 def tela_viscosidade():
+    """
+    Criação da tela para seleção da viscosidade.
+
+    Parâmetros:
+        Não há parâmetros na função.
+
+    Retorna:
+        viscosidade_escolhida: uma string que contém a viscosidade escolhida.
+    """
 
     # Configura a janela do Pygame e exibe o fundo da tela de viscosidade
     janela = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -532,7 +571,16 @@ def tela_viscosidade():
 
 # Tela gravidade
 def tela_gravidade():
+    """
+    Criação da tela para seleção da gravidade.
 
+    Parâmetros:
+        Não há parâmetros na função.
+
+    Retorna:
+        gravidade_escolhida: uma string que contém a gravidade escolhida.
+
+    """
     # Configura a janela do Pygame e exibe o fundo da tela de gravidade
     janela = pygame.display.set_mode((WIDTH, HEIGHT)) 
     pygame.display.set_caption("Escolha a gravidade") # Define o título da janela
@@ -578,6 +626,16 @@ def tela_gravidade():
 
 # Função principal
 def game_loop():
+    """
+    Função principal de loop do jogo (transição das janelas e ações).
+
+    Parâmetros:
+        Não há parâmetros na função.
+
+    Retorna:
+        Não há retorno na função.
+
+    """
     running = True  # Inicia o loop principal do jogo
     personagem = None  # Inicializa a variável para o personagem escolhido
     viscosidade = None  # Inicializa a variável para a viscosidade escolhida
