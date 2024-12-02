@@ -145,20 +145,14 @@ O projeto foi implementado em Python3, utilizando os pacotes PyGame, NumPy, Scip
     git clone https://github.com/GabriellaAlmeida07/pygame
     cd pygame
   
-  - Instale pygame:
+  - Instalacões necessárias:
     ```bash
     python -m pip install -U pygame --user
     
-  - Instale numpy:
-    ```bash
     python -m pip install -U numpy --user
 
-  - Instale matplotlib:
-    ```bash
     python -m pip install -U matplotlib --user
 
-  - Instale scipy:
-    ```bash
     python -m pip install -U scipy --user
 
       
