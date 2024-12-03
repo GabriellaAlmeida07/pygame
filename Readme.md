@@ -109,7 +109,7 @@ $$m \frac{dv}{dt} = - m g - b v$$
 
 Isso resulta em uma solução para a velocidade do objeto que leva em conta a resistência do fluido, como a água ou o mel. A solução dessa equação diferencial, levando em consideração a viscosidade, pode ser expressa como:
 
-$$v(t) = \frac{m g}{\eta} \left( 1 - e^{-\frac{b}{m} t} \right)$$
+$$v(t) = \frac{m g}{b} \left( 1 - e^{-\frac{b}{m} t} \right)$$
 
 
 ### Aplicação de queda livre no jogo
@@ -121,9 +121,9 @@ No jogo, ampliamos o conceito clássico de queda livre para explorar como difere
 * Marte: $g = 3,7 \ \text{m/s}^2$
 
 **2. Viscosidades:** No jogo temos três fluidos diferentes, cada um com sua própria viscosidade, que afeta o tempo de queda. Valores de viscosidade aplicados aos fluidos:
-* Ar: $\eta = 0,02 \ \text{mP}$ - Baixa viscosidade, resistência quase insignificante ao movimento
-* Água: $\eta = 1 \ \text{mP}$ - Viscosidade moderada, resistência perceptível ao movimento
-* Mel: $\eta = 24 \ \text{mP}$ - Alta viscosidade, grande resistência ao movimento
+* Ar: $b = 0,02 \ \text{mP}$ - Baixa viscosidade, resistência quase insignificante ao movimento
+* Água: $b = 1 \ \text{mP}$ - Viscosidade moderada, resistência perceptível ao movimento
+* Mel: $b = 24 \ \text{mP}$ - Alta viscosidade, grande resistência ao movimento
 
 
 **3. Peso dos Objetos:** O jogador pode escolher personagens com diferentes massas, representando objetos variados. Embora o peso não afete o tempo de queda em condições ideais, ele desempenha um papel importante em meios com viscosidade. São três opções de massa:
